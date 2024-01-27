@@ -7,13 +7,14 @@ from flask import request
 from flast import make_response
 
 app=Flask(__name__)
- @app.route('/webhook', methods=['POST'])
+@app.route('/webhook', methods=['POST'])
 
- def webhook():
+def webhook():
     req=request.get_json(silent=True, force=True)
     print(json.dumps(req, indent=4))
+ 
     res=makeResponse(req)
-    res=json.dumps(req, indent=4)
+    res=json.dumps(res, indent=4)
     r=make_response(res)
     r.headers['Content-Type']='application/json'
     return r
