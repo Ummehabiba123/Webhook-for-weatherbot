@@ -5,10 +5,8 @@ import requests
 from flask import Flask
 from flask import request
 from flask import make_response
-
 app=Flask(__name__)
 @app.route('/webhook', methods=['POST'])
-
 def webhook():
     req=request.get_json(silent=True, force=True)
     print(json.dumps(req, indent=4))
@@ -18,7 +16,6 @@ def webhook():
     r=make_response(res)
     r.headers['Content-Type']='application/json'
     return r
-
 def makeResponse(req):
     result=req.get("result")
     parameters=result.get("parameters")
