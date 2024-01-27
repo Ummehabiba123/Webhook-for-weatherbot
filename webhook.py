@@ -1,6 +1,6 @@
 import json
 import os
-import requestr
+import requests
 
 from flask import Flask
 from flask import request
@@ -11,7 +11,7 @@ app=Flask(__name__)
 
  def webhook():
     req=request.get_json(silent=True, force=True)
-    print(json.dumps(req, indent4))
+    print(json.dumps(req, indent=4))
     res=makeResponse(req)
     res=json.dumps(req, indent=4)
     r=make_response(res)
@@ -23,7 +23,13 @@ def makeResponse(req):
     params=result.get("parameters")
     city=params.get("geo-city")
     date=params.get("date")
-    speech=" The forecast for"+city+ "for "+date+ " is "
+    r=requests.get('http://api.openweathermap.org/data/2.5/forecast?q=' +city+ '&appid=8c7f9d083add3660d543ec5bf00e858d')
+    json_object=r.json()
+    weather=json_object['list']
+    for i in range(0,30):
+        if date in weather[i]['dt_txt']:
+            condition= weather[i]['weather'][0]['description']
+    speech=" The forecast for"+city+ "for "+date+ " is " +condition
     return{
         "speech":speech,
         "displayText": speech,
@@ -32,4 +38,4 @@ def makeResponse(req):
 if __name__=="'__main__":
     port=int(os.getenv('PORT', 5000))
     print("starting app on port %d"  %port)
-    app.run(debug=false, port=port, host='0.0.0.0')
+    app.run(debug=False, port=port, host='0.0.0.0')
