@@ -1,6 +1,4 @@
 import json
-import six
-from six.moves import http_client 
 import os
 import requests
 
